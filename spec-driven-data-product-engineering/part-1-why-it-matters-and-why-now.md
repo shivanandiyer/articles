@@ -16,6 +16,8 @@ A data product breaks that bar in a specific way. A pipeline can be functionally
 
 ![Functional correctness versus substantive correctness](images/functional-vs-substantive-correctness.png)
 
+*Passing tests and clean code prove the pipeline runs. They don't prove it means what the business needs it to mean.*
+
 </div>
 
 That's the case for treating this as a discipline problem, not just a documentation problem or a tooling problem. It takes both a spec precise enough to be built from literally, and a process that checks the build against it before anyone trusts the output. Neither one alone closes the gap.
@@ -36,6 +38,8 @@ Part of why that gap is so easy to fall into is that "build the pipeline" unders
 
 ![The seven components of a data product](images/seven-components-data-product.png)
 
+*A pipeline is one of seven components. Generating it fast doesn't make the other six exist on their own.*
+
 </div>
 
 A generic coding agent, or a human engineer working from a thin requirements doc, can generate pipeline code quickly. The rest, the data model's rigor, validation, metadata, governance, documentation, monitoring, is where the real work sits, and where the real risk lives.
@@ -47,6 +51,8 @@ Each of those seven components, the data model, the pipeline itself, validation,
 <div align="center">
 
 ![Time to working code versus time to a trustworthy data product](images/time-to-trustworthy-data-product.png)
+
+*AI compresses the coding step. The other six components still have to happen, whether or not anyone can see them happening.*
 
 </div>
 
@@ -79,13 +85,21 @@ Put the pieces together and the definition is simple: a spec-driven data product
 
 ![Spec-driven data product engineering operating model](images/spec-driven-operating-model.png)
 
+*The spec is the one artifact both the human and the AI builder are accountable to. The loop back into it is what keeps a gap from becoming production's problem.*
+
 </div>
 
 The loop matters more than the linear read suggests. When validation finds a gap, the fix isn't a patch to the code. It's a correction to the spec, followed by a rebuild. That discipline is what keeps the spec authoritative instead of becoming stale documentation within a quarter, and it's what lets an AI agent take on the components listed above (modeling, validation, governance, documentation) without a human quietly re-deriving all of it downstream.
 
+## How this relates to data contracts and spec-driven development
+
 This isn't happening in a vacuum, and it's worth being upfront about what it borrows from. Data contracts, the practice popularized by writers like Chad Sanderson and standardized through projects like the Linux Foundation's Bitol, treat a producer's schema and quality guarantees as a formal agreement with downstream consumers, checked automatically the way dbt's model contracts check it today. Spec-driven development, the discipline behind tools like GitHub's Spec Kit, applies "specification before code" to general software built by AI agents. What's described here sits between the two. A data contract governs the ongoing relationship between systems once a pipeline exists. Spec-driven development governs how AI-built software gets constructed generally. Spec-driven data product engineering is the version of that discipline aimed specifically at getting a data product built correctly the first time, with the kind of validation a data contract would check already designed into how the spec gets reviewed.
 
-That raises an obvious question: if the spec now has to carry the judgment a senior engineer used to carry, doesn't writing it become the new bottleneck? Not exactly, though it's fair to be skeptical. The more honest way to put it is that the expensive human time moves rather than disappears, from debugging a build after the fact to getting the spec right before one starts. Whether that trade actually pays off in practice, not just in theory, is what the proof of concept in Part 2 puts to the test.
+## Does this just move the bottleneck?
+
+That raises an obvious question: if the spec now has to carry the judgment a senior engineer used to carry, doesn't writing it become the new bottleneck? Not exactly, and the honest answer has two parts. The first is that the expensive human time moves rather than disappears, from debugging a build after the fact to getting the spec right before one starts. The second part is easy to miss: writing the spec isn't a blank-page exercise either. An agent can profile the actual source schema, draft candidate validation rules from what the data looks like rather than what the documentation claims, and surface the fields and edge cases that look ambiguous, all before a human opens the document. That doesn't take the human out of the loop. It changes what they're doing in it, reviewing, correcting, and approving a first draft of intent, instead of typing out table definitions and business rules from nothing. The bottleneck doesn't disappear, but it shrinks down to the part that was always going to need a person: deciding what "active" actually means, not transcribing a schema anyone could have profiled automatically. Whether that trade actually pays off in practice, not just in theory, is what the proof of concept in Part 2 puts to the test.
+
+## The judgment has to live somewhere
 
 None of this is really a story about AI agents. It's a story about what happens to judgment that used to live quietly in a senior engineer's head: the instinct to stop and ask what "active" actually means, instead of picking an answer and moving on. That judgment doesn't disappear when an agent takes over the build. It just has nowhere left to live except the spec. Write it precisely, check the build against it, and the speed AI promises is real. Skip either step, and the outcome is the same dashboard from the opening, just built faster, and trusted by more people before anyone finds the gap.
 
@@ -99,3 +113,5 @@ Part 2 goes inside an actual build: what a real spec has to carry in detail, how
 - [dbt Model Contracts](https://docs.getdbt.com/docs/mesh/govern/model-contracts): how one widely used tool actually enforces a data contract at build time.
 - [Open Data Contract Standard](https://bitol.io/): the Linux Foundation-backed open standard for defining and versioning data contracts across tools and platforms.
 - [GitHub Spec Kit](https://github.com/github/spec-kit): an open-source toolkit for spec-driven software development with AI coding agents, the general-software counterpart to the data-specific argument made here.
+- [Genie Code](https://docs.databricks.com/aws/en/genie-code/), Databricks documentation: the official overview of the platform-native agent referenced in this piece's closing section.
+- [What's New in Genie Code at Data + AI Summit 2026](https://www.databricks.com/blog/whats-new-genie-code-data-ai-summit-2026), Databricks: covers Genie Ontology, the context layer that gives Genie Code visibility into an organization's tables, metrics, and patterns, directly relevant to the "closes part of the gap, not all of it" argument made above.
