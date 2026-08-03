@@ -10,7 +10,7 @@ That's the more realistic version of this problem, and it's worth being precise 
 
 It's tempting to assume the fix is simply "write something down and hand it to the agent," the way the team in the opening did. That's closer, but it still isn't enough, and the reason matters. A general-purpose coding agent is built and evaluated against a fairly narrow bar: does the code compile, do the tests pass, does it follow reasonable conventions. That bar is sufficient for most software, where correctness is a property of behavior: a function either returns the right value or it doesn't, and a test catches the difference.
 
-A data product breaks that bar in a specific way. A pipeline can be functionally flawless (clean code, green tests, sensible structure) and still be *substantively* wrong, because it encodes the wrong definition of the business. A generic agent handed an imprecise document doesn't fail loudly. It fills the gap with a reasonable-looking guess and keeps going, the same way it did in the opening, because nothing about how it was built or evaluated teaches it to distinguish "this is a stated rule" from "this is a hole I'm quietly patching." And once it's built, nothing forces anyone to check the result against the document before it reaches a dashboard.
+A data product breaks that bar in a specific way. A pipeline can be functionally flawless (clean code, green tests, sensible structure) and still be *substantively* wrong, because it encodes the wrong definition of the business. Some agents can flag ambiguity when asked to. Few workflows actually ask them to, and fewer still stop the build until a human answers. A generic agent handed an imprecise document, left to its default behavior, doesn't fail loudly. It fills the gap with a reasonable-looking guess and keeps going, the same way it did in the opening. And once it's built, nothing in most processes forces anyone to check the result against the document before it reaches a dashboard.
 
 <div align="center">
 
@@ -38,11 +38,11 @@ Part of why that gap is so easy to fall into is that "build the pipeline" unders
 
 </div>
 
-A generic coding agent, or a human engineer working from a thin requirements doc, can produce the first item on that list quickly. The rest is where the real work and the real risk actually live.
+A generic coding agent, or a human engineer working from a thin requirements doc, can generate pipeline code quickly. The rest, the data model's rigor, validation, metadata, governance, documentation, monitoring, is where the real work sits, and where the real risk lives.
 
 ## The time problem
 
-That breadth is exactly why data products have traditionally taken so long to design, build, and deliver. Each item on that list tends to have its own owner, its own review cycle, and its own dependency on the item before it: the data model has to be validated before the pipeline gets built, the pipeline has to be trusted before governance signs off, and governance has to sign off before anything reaches a stakeholder. Weeks turn into months, and most of that time isn't spent writing code. It's spent in the coordination between components that were never fully specified up front, so every handoff becomes a fresh negotiation about what was actually meant.
+Each of those seven components, the data model, the pipeline itself, validation, metadata, governance, documentation, monitoring, tends to have its own owner, its own review cycle, and its own dependency on the one before it: the data model has to be validated before the pipeline gets built, the pipeline has to be trusted before governance signs off, and governance has to sign off before anything reaches a stakeholder. That dependency chain, not the coding itself, is why data products have traditionally taken so long to design, build, and deliver. Weeks turn into months, and most of that time isn't spent writing code. It's spent in the coordination between components that were never fully specified up front, so every handoff becomes a fresh negotiation about what was actually meant.
 
 <div align="center">
 
@@ -54,7 +54,7 @@ This is the pressure AI agents are being brought in to relieve, and it's exactly
 
 ## The gap isn't "no spec." It's "spec written for the wrong reader."
 
-Data products have never been built without requirements. BRDs get written, tickets get filed, design gets reviewed. The idea that data teams work ad hoc, with no spec at all, doesn't hold up. Most organizations already have some version of a requirements process.
+Most data products aren't built with nothing written down. BRDs get written, tickets get filed, design gets reviewed, at least in organizations with any real engineering maturity. The idea that data teams generally work ad hoc, with no spec at all, doesn't hold up as the common case.
 
 The real gap is who that spec was written for. It was written to get sign-off from a stakeholder: readable enough for a business sponsor, precise enough for an engineer to start from. And that worked, because the engineer reading it could fill in the gaps. A vague requirement like "flag high-risk patients" gets resolved by a senior engineer who's sat in the domain long enough to know what "high-risk" means in practice, what edge cases matter, and which shortcuts are safe to take.
 
@@ -83,6 +83,17 @@ Put the pieces together and the definition is simple: a spec-driven data product
 
 The loop matters more than the linear read suggests. When validation finds a gap, the fix isn't a patch to the code. It's a correction to the spec, followed by a rebuild. That discipline is what keeps the spec authoritative instead of becoming stale documentation within a quarter, and it's what lets an AI agent take on the components listed above (modeling, validation, governance, documentation) without a human quietly re-deriving all of it downstream.
 
+This isn't happening in a vacuum, and it's worth being upfront about what it borrows from. Data contracts, the practice popularized by writers like Chad Sanderson and standardized through projects like the Linux Foundation's Bitol, treat a producer's schema and quality guarantees as a formal agreement with downstream consumers, checked automatically the way dbt's model contracts check it today. Spec-driven development, the discipline behind tools like GitHub's Spec Kit, applies "specification before code" to general software built by AI agents. What's described here sits between the two. A data contract governs the ongoing relationship between systems once a pipeline exists. Spec-driven development governs how AI-built software gets constructed generally. Spec-driven data product engineering is the version of that discipline aimed specifically at getting a data product built correctly the first time, with the kind of validation a data contract would check already designed into how the spec gets reviewed.
+
+That raises an obvious question: if the spec now has to carry the judgment a senior engineer used to carry, doesn't writing it become the new bottleneck? Not exactly, though it's fair to be skeptical. The more honest way to put it is that the expensive human time moves rather than disappears, from debugging a build after the fact to getting the spec right before one starts. Whether that trade actually pays off in practice, not just in theory, is what the proof of concept in Part 2 puts to the test.
+
 None of this is really a story about AI agents. It's a story about what happens to judgment that used to live quietly in a senior engineer's head: the instinct to stop and ask what "active" actually means, instead of picking an answer and moving on. That judgment doesn't disappear when an agent takes over the build. It just has nowhere left to live except the spec. Write it precisely, check the build against it, and the speed AI promises is real. Skip either step, and the outcome is the same dashboard from the opening, just built faster, and trusted by more people before anyone finds the gap.
 
 Part 2 goes inside an actual build: what a real spec has to carry in detail, how the process runs when a pipeline spec and an intelligence-layer spec work together, and what a working proof of concept showed, including where the model held up under real pressure and where it didn't.
+
+## Further reading
+
+- [The Rise of Data Contracts](https://dataproducts.substack.com/p/the-rise-of-data-contracts), Chad Sanderson: one of the clearest introductions to why treating data like a governed contract between producer and consumer matters.
+- [dbt Model Contracts](https://docs.getdbt.com/docs/mesh/govern/model-contracts): how one widely used tool actually enforces a data contract at build time.
+- [Open Data Contract Standard](https://bitol.io/): the Linux Foundation-backed open standard for defining and versioning data contracts across tools and platforms.
+- [GitHub Spec Kit](https://github.com/github/spec-kit): an open-source toolkit for spec-driven software development with AI coding agents, the general-software counterpart to the data-specific argument made here.
