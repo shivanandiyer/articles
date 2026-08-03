@@ -16,7 +16,7 @@ A data product breaks that bar in a specific way. A pipeline can be functionally
 
 ![Functional correctness versus substantive correctness](images/functional-vs-substantive-correctness.png)
 
-*Passing tests and clean code prove the pipeline runs. They don't prove it means what the business needs it to mean.*
+*<sub>Passing tests and clean code prove the pipeline runs. They don't prove it means what the business needs it to mean.</sub>*
 
 </div>
 
@@ -38,7 +38,7 @@ Part of why that gap is so easy to fall into is that "build the pipeline" unders
 
 ![The seven components of a data product](images/seven-components-data-product.png)
 
-*A pipeline is one of seven components. Generating it fast doesn't make the other six exist on their own.*
+*<sub>A pipeline is one of seven components. Generating it fast doesn't make the other six exist on their own.</sub>*
 
 </div>
 
@@ -52,7 +52,7 @@ Each of those seven components, the data model, the pipeline itself, validation,
 
 ![Time to working code versus time to a trustworthy data product](images/time-to-trustworthy-data-product.png)
 
-*AI compresses the coding step. The other six components still have to happen, whether or not anyone can see them happening.*
+*<sub>AI compresses the coding step. The other six components still have to happen, whether or not anyone can see them happening.</sub>*
 
 </div>
 
@@ -85,7 +85,7 @@ Put the pieces together and the definition is simple: a spec-driven data product
 
 ![Spec-driven data product engineering operating model](images/spec-driven-operating-model.png)
 
-*The spec is the one artifact both the human and the AI builder are accountable to. The loop back into it is what keeps a gap from becoming production's problem.*
+*<sub>The spec is the one artifact both the human and the AI builder are accountable to. The loop back into it is what keeps a gap from becoming production's problem.</sub>*
 
 </div>
 
