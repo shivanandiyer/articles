@@ -14,9 +14,7 @@ A data product breaks that bar in a specific way. A pipeline can be functionally
 
 <div align="center">
 
-![Functional correctness versus substantive correctness](images/functional-vs-substantive-correctness.png)
-
-*<sub>Passing tests and clean code prove the pipeline runs. They don't prove it means what the business needs it to mean.</sub>*
+![Functional correctness versus contextual correctness vs substantive correctness](images/functional-vs-substantive-correctness.png)
 
 </div>
 
@@ -51,8 +49,6 @@ Each of those seven components tends to have its own owner, its own review cycle
 <div align="center">
 
 ![Time to working code versus time to a trustworthy data product](images/time-to-trustworthy-data-product.png)
-
-*<sub>AI compresses the coding step. The other key components still have to happen, whether or not anyone can see them happening.</sub>*
 
 </div>
 
