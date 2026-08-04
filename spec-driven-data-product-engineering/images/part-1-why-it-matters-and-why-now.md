@@ -12,11 +12,13 @@ It's tempting to assume the fix is simply "write something down and hand it to t
 
 A data product breaks that bar in a specific way. A pipeline can be functionally flawless (clean code, green tests, sensible structure) and still be *substantively* wrong, because it encodes the wrong definition of the business. Some agents can flag ambiguity when asked to. Few workflows actually ask them to, and fewer still stop the build until a human answers. A generic agent handed an imprecise document, left to its default behavior, doesn't fail loudly. It fills the gap with a reasonable-looking guess and keeps going, the same way it did in the opening.
 
+There's a third failure mode worth naming separately, and it happens even earlier. Before an agent can get a business definition right, it has to know what already exists: which tables are real, how they relate, where a given metric actually lives. A generic agent starting from a blank spec doesn't have that visibility either, so it isn't only guessing at meaning, sometimes it's guessing at structure too.
+
 <div align="center">
 
-![Functional correctness versus substantive correctness](images/functional-vs-substantive-correctness.png)
+![Three kinds of correctness: functional, contextual, and substantive](images/functional-vs-substantive-correctness.png)
 
-*<sub>Passing tests and clean code prove the pipeline runs. They don't prove it means what the business needs it to mean.</sub>*
+*<sub>Passing tests proves the code runs. Knowing the data estate proves it isn't guessing at structure. Neither one proves it means what the business needs it to mean.</sub>*
 
 </div>
 
@@ -106,7 +108,7 @@ None of this is really a story about AI agents. It's a story about what happens 
 
 There's a sharper way to say this: the goal isn't more documentation, it's determinism. An ambiguous spec doesn't just risk one wrong guess, it risks a different wrong guess every time the build runs, ninety days this month, sixty the next. Once a judgment call gets made and written into the spec, the rest of the build should produce the same output from the same spec and the same data, every time. Part 2 gets into what actually makes that true.
 
-One caveat: not every AI builder starts from zero. A platform-native agent like Databricks' Genie Code already sits inside Unity Catalog, with schemas, lineage, and governance in view, so it isn't reconstructing the data estate from nothing. That closes part of this problem, the part where an agent invents structure because nobody told it anything. It doesn't close the harder part: Genie Code still can't know that "active" means ninety days for one metric and something else for another, because that's a business judgment, not a catalog fact. A context-aware agent changes what the spec has to spend its words on, less time describing a data estate it can already see, more time capturing the judgment a senior engineer used to supply.
+One caveat: not every AI builder starts from zero. This is the contextual correctness column from earlier, and it's the one a platform-native agent can actually check by default. A platform-native agent like Databricks' Genie Code already sits inside Unity Catalog, with schemas, lineage, and governance in view, so it isn't reconstructing the data estate from nothing. That closes part of this problem, the part where an agent invents structure because nobody told it anything. It doesn't close the harder part, substantive correctness is still not for sale: Genie Code still can't know that "active" means ninety days for one metric and something else for another, because that's a business judgment, not a catalog fact. A context-aware agent changes what the spec has to spend its words on, less time describing a data estate it can already see, more time capturing the judgment a senior engineer used to supply.
 
 Write the spec precisely, check the build against it, and the speed AI promises is real. Skip either step, and the outcome is the same dashboard from the opening, just built faster, and trusted by more people before anyone finds the gap.
 
