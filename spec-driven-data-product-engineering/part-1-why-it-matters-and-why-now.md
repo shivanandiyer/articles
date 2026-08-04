@@ -52,7 +52,7 @@ Each of those seven components tends to have its own owner, its own review cycle
 
 ![Time to working code versus time to a trustworthy data product](images/time-to-trustworthy-data-product.png)
 
-*<sub>AI compresses the coding step. The other six components still have to happen, whether or not anyone can see them happening.</sub>*
+*<sub>AI compresses the coding step. The other key components still have to happen, whether or not anyone can see them happening.</sub>*
 
 </div>
 
