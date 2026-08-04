@@ -12,15 +12,19 @@ It's tempting to assume the fix is simply "write something down and hand it to t
 
 A data product breaks that bar in a specific way. A pipeline can be functionally flawless (clean code, green tests, sensible structure) and still be *substantively* wrong, because it encodes the wrong definition of the business. Some agents can flag ambiguity when asked to. Few workflows actually ask them to, and fewer still stop the build until a human answers. A generic agent handed an imprecise document, left to its default behavior, doesn't fail loudly. It fills the gap with a reasonable-looking guess and keeps going, the same way it did in the opening.
 
+There's a third failure mode worth naming separately, and it happens even earlier. Before an agent can get a business definition right, it has to know what already exists: which tables are real, how they relate, where a given metric actually lives. A generic agent starting from a blank spec doesn't have that visibility either, so it isn't only guessing at meaning, sometimes it's guessing at structure too.
+
 <div align="center">
 
-![Functional correctness versus contextual correctness vs substantive correctness](images/functional-vs-substantive-correctness.png)
+![Three kinds of correctness: functional, contextual, and substantive](images/functional-vs-substantive-correctness.png)
+
+*<sub>Passing tests proves the code runs. Knowing the data estate proves it isn't guessing at structure. Neither one proves it means what the business needs it to mean.</sub>*
 
 </div>
 
 That's the case for treating this as a discipline problem, not just a documentation problem or a tooling problem. It takes both a spec precise enough to be built from literally, and a process that checks the build against it before anyone trusts the output. Neither one alone closes the gap.
 
-## What actually goes into building a data product
+## What actually goes into building an AI-native data product
 
 Part of why that gap is so easy to fall into is that "build the pipeline" undersells how much a data product actually requires. A working, trustworthy data product isn't one artifact. It's several, each with its own logic and its own way of going wrong:
 
@@ -31,24 +35,29 @@ Part of why that gap is so easy to fall into is that "build the pipeline" unders
 - **Access and governance controls:** who can see what, what needs masking, and which regulatory boundaries apply
 - **Documentation and runbooks:** how to operate, troubleshoot, and extend the product without the original builder in the room
 - **Monitoring and freshness guarantees:** how anyone knows the product is still correct after the day it shipped, not just on the day it was demoed
+- **A semantic and ontology layer:** the mapping from raw schema to business meaning, the layer that lets a person or an agent ask what "active" means and get an answer instead of a guess
+
+An AI-native data product adds one more requirement on top of that list: a consumption layer built to be queried directly, whether that's a conversational interface, dashboards, or both, sitting on top of the semantic layer rather than the raw schema, with a path for a wrong answer to correct the meaning it was drawn from, not just the code that generated it.
 
 <div align="center">
 
-![The key components of a data product](images/eight-components-data-product.png)
+![The components of an AI-native data product](images/eight-components-data-product.png)
 
-*<sub>Generating a pipeline takes an afternoon. Making it mean something, governed, documented, explainable, queryable, takes the other seven components too.</sub>*
+*<sub>Eight components make the data trustworthy. The consumption layer on top is where it gets used, and where a wrong answer should correct the meaning, not just the code.</sub>*
 
 </div>
 
-A generic coding agent, or a human engineer working from a thin requirements doc, can generate pipeline code quickly. The rest, the data model's rigor, validation, metadata, governance, documentation, monitoring, is where the real work sits, and where the real risk lives.
+A generic coding agent, or a human engineer working from a thin requirements doc, can generate pipeline code quickly. The rest, the data model's rigor, validation, metadata, governance, documentation, monitoring, and the semantic layer that makes any of it queryable, is where the real work sits, and where the real risk lives.
 
 ## The time problem
 
-Each of those seven components tends to have its own owner, its own review cycle, and its own dependency on the one before it: the data model has to be validated before the pipeline gets built, the pipeline has to be trusted before governance signs off, and governance has to sign off before anything reaches a stakeholder. That dependency chain, not the coding itself, is why data products have traditionally taken so long to design, build, and deliver. Weeks turn into months, and most of that time isn't spent writing code. It's spent in the coordination between components that were never fully specified up front.
+Each of those components tends to have its own owner, its own review cycle, and its own dependency on the one before it: the data model has to be validated before the pipeline gets built, the pipeline has to be trusted before governance signs off, and governance has to sign off before anything reaches a stakeholder. That dependency chain, not the coding itself, is why data products have traditionally taken so long to design, build, and deliver. Weeks turn into months, and most of that time isn't spent writing code. It's spent in the coordination between components that were never fully specified up front.
 
 <div align="center">
 
 ![Time to working code versus time to a trustworthy data product](images/time-to-trustworthy-data-product.png)
+
+*<sub>AI compresses the coding step. The other seven components still have to happen, whether or not anyone can see them happening.</sub>*
 
 </div>
 
@@ -99,11 +108,11 @@ None of this is really a story about AI agents. It's a story about what happens 
 
 There's a sharper way to say this: the goal isn't more documentation, it's determinism. An ambiguous spec doesn't just risk one wrong guess, it risks a different wrong guess every time the build runs, ninety days this month, sixty the next. Once a judgment call gets made and written into the spec, the rest of the build should produce the same output from the same spec and the same data, every time. Part 2 gets into what actually makes that true.
 
-One caveat: not every AI builder starts from zero. A platform-native agent like Databricks' Genie Code already sits inside Unity Catalog, with schemas, lineage, and governance in view, so it isn't reconstructing the data estate from nothing. That closes part of this problem, the part where an agent invents structure because nobody told it anything. It doesn't close the harder part: Genie Code still can't know that "active" means ninety days for one metric and something else for another, because that's a business judgment, not a catalog fact. A context-aware agent changes what the spec has to spend its words on, less time describing a data estate it can already see, more time capturing the judgment a senior engineer used to supply.
+One caveat: not every AI builder starts from zero. This is the contextual correctness column from earlier, and it's the one a platform-native agent can actually check by default. A platform-native agent like Databricks' Genie Code already sits inside Unity Catalog, with schemas, lineage, and governance in view, so it isn't reconstructing the data estate from nothing. That closes part of this problem, the part where an agent invents structure because nobody told it anything. It doesn't close the harder part, substantive correctness is still not for sale: Genie Code still can't know that "active" means ninety days for one metric and something else for another, because that's a business judgment, not a catalog fact. A context-aware agent changes what the spec has to spend its words on, less time describing a data estate it can already see, more time capturing the judgment a senior engineer used to supply.
 
 Write the spec precisely, check the build against it, and the speed AI promises is real. Skip either step, and the outcome is the same dashboard from the opening, just built faster, and trusted by more people before anyone finds the gap.
 
-**Part 2 goes inside an actual build: what a real spec has to carry in detail, how the process runs when a pipeline spec and an intelligence-layer spec work together, and what a working proof of concept showed, including where the model held up under real pressure and where it didn't.**
+Part 2 goes inside an actual build: what a real spec has to carry in detail, how the process runs when a pipeline spec and an intelligence-layer spec work together, and what a working proof of concept showed, including where the model held up under real pressure and where it didn't.
 
 ## Further reading
 
