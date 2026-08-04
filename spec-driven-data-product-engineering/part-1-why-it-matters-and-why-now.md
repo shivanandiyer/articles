@@ -18,8 +18,6 @@ There's a third failure mode worth naming separately, and it happens even earlie
 
 ![Three kinds of correctness: functional, contextual, and substantive](images/functional-vs-substantive-correctness.png)
 
-*<sub>Passing tests proves the code runs. Knowing the data estate proves it isn't guessing at structure. Neither one proves it means what the business needs it to mean.</sub>*
-
 </div>
 
 That's the case for treating this as a discipline problem, not just a documentation problem or a tooling problem. It takes both a spec precise enough to be built from literally, and a process that checks the build against it before anyone trusts the output. Neither one alone closes the gap.
@@ -56,8 +54,6 @@ Each of those components tends to have its own owner, its own review cycle, and 
 <div align="center">
 
 ![Time to working code versus time to a trustworthy data product](images/time-to-trustworthy-data-product.png)
-
-*<sub>AI compresses the coding step. The other seven components still have to happen, whether or not anyone can see them happening.</sub>*
 
 </div>
 
