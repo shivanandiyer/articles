@@ -43,7 +43,7 @@ An AI-native data product adds one more requirement on top of that list: a consu
 
 ![The components of an AI-native data product](images/eight-components-data-product.png)
 
-*<sub>A pipeline is one of eight components, and the semantic and ontology layer is what makes any of them answerable in plain language.</sub>*
+*<sub>Eight components make the data trustworthy. The consumption layer on top is where it gets used, and where a wrong answer should correct the meaning, not just the code.</sub>*
 
 </div>
 
@@ -51,7 +51,7 @@ A generic coding agent, or a human engineer working from a thin requirements doc
 
 ## The time problem
 
-Each of those eight components tends to have its own owner, its own review cycle, and its own dependency on the one before it: the data model has to be validated before the pipeline gets built, the pipeline has to be trusted before governance signs off, and governance has to sign off before anything reaches a stakeholder. That dependency chain, not the coding itself, is why data products have traditionally taken so long to design, build, and deliver. Weeks turn into months, and most of that time isn't spent writing code. It's spent in the coordination between components that were never fully specified up front.
+Each of those components tends to have its own owner, its own review cycle, and its own dependency on the one before it: the data model has to be validated before the pipeline gets built, the pipeline has to be trusted before governance signs off, and governance has to sign off before anything reaches a stakeholder. That dependency chain, not the coding itself, is why data products have traditionally taken so long to design, build, and deliver. Weeks turn into months, and most of that time isn't spent writing code. It's spent in the coordination between components that were never fully specified up front.
 
 <div align="center">
 
