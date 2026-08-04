@@ -36,7 +36,7 @@ Part of why that gap is so easy to fall into is that "build the pipeline" unders
 
 <div align="center">
 
-![The seven components of a data product](images/seven-components-data-product.png)
+![The seven components of a data product](images/eight-components-data-product.png)
 
 *<sub>A pipeline is one of seven components. Generating it fast doesn't make the other six exist on their own.</sub>*
 
